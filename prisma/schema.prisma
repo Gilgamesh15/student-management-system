@@ -3,6 +3,97 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Student {
+  id             Int                @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String             @unique
+  dateOfBirth    DateTime
+  enrollmentDate DateTime           @default(now())
+  grade          Int
+  enrollments    CourseEnrollment[]
+  attendance     Attendance[]
+  assignments    Assignment[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+model Teacher {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  subjects  Subject[]
+  courses   Course[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Subject {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  teachers    Teacher[]
+  courses     Course[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Course {
+  id          Int                @id @default(autoincrement())
+  name        String
+  subjectId   Int
+  subject     Subject            @relation(fields: [subjectId], references: [id])
+  teacherId   Int
+  teacher     Teacher            @relation(fields: [teacherId], references: [id])
+  semester    String
+  year        Int
+  enrollments CourseEnrollment[]
+  assignments Assignment[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model CourseEnrollment {
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  student   Student  @relation(fields: [studentId], references: [id])
+  courseId  Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  grade     Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, courseId])
+}
+
+model Assignment {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  dueDate     DateTime
+  courseId    Int
+  course      Course   @relation(fields: [courseId], references: [id])
+  studentId   Int
+  student     Student  @relation(fields: [studentId], references: [id])
+  score       Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  present   Boolean  @default(false)
+  studentId Int
+  student   Student  @relation(fields: [studentId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, date])
 }

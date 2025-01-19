@@ -6,35 +6,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
-import SubjectForm from "./SubjectForm";
+import SubjectForm from "./SubjectCreateForm";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-
-export type Subject = Awaited<ReturnType<typeof getSubjects>>[number];
-
-async function getSubjects() {
-  return db.subject.findMany({
-    include: {
-      teachers: true,
-      courses: true,
-    },
-  });
-}
-
-async function getTeachers() {
-  return db.teacher.findMany();
-}
-
-async function getCourses() {
-  return db.course.findMany();
-}
+import { getDetailedSubjects } from "@/lib/actions/subject";
 
 export default async function SubjectPage() {
-  const subjects = await getSubjects();
-
-  const [teachers, courses] = await Promise.all([getTeachers(), getCourses()]);
+  const subjects = await getDetailedSubjects();
 
   return (
     <div className="container mx-auto py-10">
@@ -47,15 +26,10 @@ export default async function SubjectPage() {
         </DialogTrigger>
         <DialogContent>
           <DialogTitle>Create Subject</DialogTitle>
-          <SubjectForm teachers={teachers} courses={courses} />
+          <SubjectForm />
         </DialogContent>
       </Dialog>
-      <DataTable
-        columns={columns}
-        data={subjects}
-        teachers={teachers}
-        courses={courses}
-      />
+      <DataTable columns={columns} data={subjects} />
     </div>
   );
 }

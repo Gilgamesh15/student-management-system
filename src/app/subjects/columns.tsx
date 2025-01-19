@@ -18,12 +18,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { deleteSubject } from "@/lib/actions";
-import SubjectEdit from "./SubjectEdit";
+import { deleteSubject } from "@/lib/actions/subject";
+import SubjectEdit from "./SubjectEditForm";
 import { Badge } from "@/components/ui/badge";
-import { Subject } from "./page";
+import { DetailedSubject } from "@/lib/types";
 
-export const columns: ColumnDef<Subject>[] = [
+export const columns: ColumnDef<DetailedSubject>[] = [
   { accessorKey: "name", header: "Name" },
   {
     accessorKey: "description",
@@ -115,12 +115,7 @@ export const columns: ColumnDef<Subject>[] = [
           <DialogContent>
             <DialogTitle>Subject Details</DialogTitle>
 
-            <SubjectEdit
-              teachers={[]}
-              courses={[]}
-              subject={subject}
-              {...table.options.meta}
-            />
+            <SubjectEdit subject={subject} {...table.options.meta} />
           </DialogContent>
         </Dialog>
       );
