@@ -4,8 +4,7 @@
 
 I designed and implemented a comprehensive student management platform that demonstrates advanced integration between relational database concepts and modern web development patterns. This full-stack application showcases my ability to solve complex technical challenges while maintaining clean architecture and code reusability.
 
-![Dashboard Screenshot](https://via.placeholder.com/800x450)
-*Project dashboard interface with educational data visualization*
+<img width="1116" alt="Image" src="https://github.com/user-attachments/assets/9068805b-c0a7-438b-ae2a-94259ba78775" />
 
 ## Technical Stack
 
@@ -57,6 +56,9 @@ onSubmit={form.handleSubmit((data) => {
 })}
 ```
 
+<img width="546" alt="Image" src="https://github.com/user-attachments/assets/d1628020-f756-4601-ad25-a880521eec09" />
+<img width="393" alt="Image" src="https://github.com/user-attachments/assets/e813fa67-4053-4099-bb05-f73259aad587" />
+
 This pattern demonstrates my ability to work with advanced React concepts and create seamless user experiences that maintain data integrity.
 
 ### 2. Relational Data Handling with Custom Components
@@ -72,6 +74,8 @@ I created a reusable ComboboxField component that elegantly handles relationship
   generateName={(student) => `${student.firstName} ${student.lastName}`}
 />
 ```
+
+<img width="585" alt="Image" src="https://github.com/user-attachments/assets/bae6a0d6-d9b4-4635-8dd2-c34c87671bcf" />
 
 The component features:
 - Dynamic data rendering with a flexible `generateName` function
@@ -253,6 +257,9 @@ Each entity has a dedicated data table with filtering, pagination, and row actio
 />
 ```
 
+<img width="880" alt="Image" src="https://github.com/user-attachments/assets/f598ead7-f898-4d13-a8e3-7190773367e7" />
+<img width="870" alt="Image" src="https://github.com/user-attachments/assets/50dac978-58ce-4eaa-b4cc-fff128240fae" />
+
 ### Row-Level Actions
 
 Each row has a dropdown menu with edit and delete options:
@@ -277,6 +284,8 @@ Each row has a dropdown menu with edit and delete options:
   </DropdownMenuContent>
 </DropdownMenu>
 ```
+
+<img width="201" alt="Image" src="https://github.com/user-attachments/assets/1ed7de4e-403d-4383-b11f-7f999f26d5d7" />
 
 ### Server-Side Data Operations
 
