@@ -34,7 +34,7 @@ async function main() {
     "Physical Education",
   ];
 
-  const createdSubjects = await prisma.subject.createMany({
+  await prisma.subject.createMany({
     data: subjects.map((subject) => ({
       name: subject,
       description: faker.lorem.paragraph(),
@@ -53,7 +53,7 @@ async function main() {
     email: faker.internet.email(),
   }));
 
-  const createdTeachers = await prisma.teacher.createMany({
+  await prisma.teacher.createMany({
     data: teacherData,
   });
 

@@ -4,9 +4,7 @@ import { z } from "zod";
 import { Course, Student } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import _ from "lodash";
 
-import { assignmentCreateSchema } from "@/lib/schemas";
 import { updateAssignment } from "@/lib/actions/assignments";
 import { Form } from "@/components/ui/form";
 import {
@@ -20,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useActionState, useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { DetailedAssignment } from "@/lib/types";
+import { assignmentUpdateSchema } from "@/lib/schemas/assignment";
 
 interface AssignmentEditForm {
   assignment: DetailedAssignment;
@@ -32,7 +31,7 @@ const AssignmentEditForm = ({
   students,
   courses,
 }: AssignmentEditForm) => {
-  const defaultValues: z.infer<typeof assignmentCreateSchema> = assignment;
+  const defaultValues: z.infer<typeof assignmentUpdateSchema> = assignment;
 
   const [isPending, startTransition] = useTransition();
   const [state, formAction] = useActionState(updateAssignment, {
@@ -48,8 +47,8 @@ const AssignmentEditForm = ({
     message: undefined,
   });
 
-  const form = useForm<z.infer<typeof assignmentCreateSchema>>({
-    resolver: zodResolver(assignmentCreateSchema),
+  const form = useForm<z.infer<typeof assignmentUpdateSchema>>({
+    resolver: zodResolver(assignmentUpdateSchema),
     defaultValues,
   });
 
@@ -57,7 +56,7 @@ const AssignmentEditForm = ({
     if (state?.errors) {
       Object.entries(state.errors).forEach(([key, value]) => {
         if (Array.isArray(value)) {
-          form.setError(key as keyof z.infer<typeof assignmentCreateSchema>, {
+          form.setError(key as keyof z.infer<typeof assignmentUpdateSchema>, {
             message: value.join(", "),
           });
         }
@@ -67,16 +66,20 @@ const AssignmentEditForm = ({
 
   useEffect(() => {
     if (isPending) {
-      toast.loading("Updating assignment");
-    }
-    if (!_.isEmpty(state.errors)) {
+      toast.dismiss();
+      toast.loading("Updating assignment...");
+    } else if (
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(state.errors).some(([_, value]) => value !== undefined)
+    ) {
+      toast.dismiss();
       toast.error("Failed to update assignment");
-    }
-    if (state.message) {
+    } else if (state.message) {
+      toast.dismiss();
       toast.success(state.message);
     }
   }, [isPending, state.message, state.errors]);
-
+  console.log(JSON.stringify(state.errors));
   return (
     <Form {...form}>
       <form

@@ -47,21 +47,16 @@ export async function createAssignment(
     studentId: formData.get("studentId"),
     score: formData.get("score"),
   });
-
   if (!parseResult.success) {
     return {
       errors: parseResult.error.flatten().fieldErrors,
       message: undefined,
     };
   }
-
   const data: z.infer<typeof assignmentCreateSchema> = parseResult.data;
-
   try {
     await db.assignment.create({ data });
-
     revalidatePath("/assignments");
-
     return {
       errors: {},
       message: "Assignment created successfully.",
@@ -102,16 +97,13 @@ export async function updateAssignment(
     studentId: formData.get("studentId"),
     score: formData.get("score"),
   });
-
   if (!parseResult.success) {
     return {
       errors: parseResult.error.flatten().fieldErrors,
       message: undefined,
     };
   }
-
   const data: z.infer<typeof assignmentUpdateSchema> = parseResult.data;
-
   const { id, ...rest } = data;
   try {
     await db.assignment.update({
@@ -120,9 +112,7 @@ export async function updateAssignment(
       },
       data: rest,
     });
-
     revalidatePath("/assignments");
-
     return {
       errors: {},
       message: "Assignment updated successfully.",
